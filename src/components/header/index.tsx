@@ -1,25 +1,38 @@
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { ShoppingCartSimple, User } from "phosphor-react";
+import { Container, Figure, Image, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import Icon from "../../assets/icon.png";
+import { NavLink } from "react-router-dom";
 
 export const Header = () => {
   return (
     <header>
       <Navbar bg="primary" expand="lg">
         <Container>
-          <Navbar.Brand href="#home">Eboot</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+          <Navbar.Brand as={NavLink} to="/">
+            <Figure.Image width={35} height={35} src={Icon} />
+            Eboot
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-sm`} />
+          <Navbar.Offcanvas
+            id={`offcanvasNavbar-expand-sm`}
+            aria-labelledby={`offcanvasNavbarLabel-expand-sm`}
+            placement="end"
+          >
+            <Offcanvas.Header closeButton>
+              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>Offcanvas</Offcanvas.Title>
+            </Offcanvas.Header>
+            <Offcanvas.Body>
+              <Nav className="w-100 d-flex justify-content-end">
+                <Nav.Link as={NavLink} to="/login">
+                  <User size={24} />
+                  Entrar
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/carrinho">
+                  <ShoppingCartSimple size={24} />
+                </Nav.Link>
+              </Nav>
+            </Offcanvas.Body>
+          </Navbar.Offcanvas>
         </Container>
       </Navbar>
     </header>
