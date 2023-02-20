@@ -1,6 +1,5 @@
 import { Button, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import styles from "./styles.module.scss";
 export const Login = () => {
   const navigate = useNavigate();
 
@@ -8,7 +7,7 @@ export const Login = () => {
     navigate("/");
   }
   return (
-    <Container fluid className={styles.container}>
+    <Container fluid className="d-flex justify-content-center align-items-center vh-100">
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Login</Form.Label>
