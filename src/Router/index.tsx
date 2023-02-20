@@ -1,12 +1,17 @@
 import { Route, Routes } from "react-router-dom";
+import { DefaultLayout } from "../layouts/default-layout";
+import { CadastroCliente } from "../pages/cadastro-cliente";
 import { Home } from "../pages/home";
 import { Login } from "../pages/login";
 
 export const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<DefaultLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastrar-cliente" element={<CadastroCliente />} />
+      </Route>
     </Routes>
   );
 };
