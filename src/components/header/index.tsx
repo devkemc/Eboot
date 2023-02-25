@@ -5,8 +5,8 @@ import { NavLink } from "react-router-dom";
 
 export const Header = () => {
   return (
-    <header>
-      <Navbar bg="primary" expand="lg">
+    <header className="mb-5">
+      <Navbar bg="primary" expand="lg" fixed="top">
         <Container>
           <Navbar.Brand as={NavLink} to="/">
             <Figure.Image width={35} height={35} src={Icon} />
@@ -19,7 +19,10 @@ export const Header = () => {
             placement="end"
           >
             <Offcanvas.Header closeButton>
-              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>Offcanvas</Offcanvas.Title>
+              <Offcanvas.Title id={`offcanvasNavbarLabel-expand-sm`}>
+                <Figure.Image width={35} height={35} src={Icon} />
+                Ebook
+              </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="w-100 d-flex justify-content-end">
