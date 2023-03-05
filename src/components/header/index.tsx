@@ -30,7 +30,7 @@ export const Header = () => {
                   <User size={24} />
                   Entrar
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/carrinho">
+                <Nav.Link as={NavLink} to="/carrinho-compras">
                   <ShoppingCartSimple size={24} />
                 </Nav.Link>
               </Nav>
