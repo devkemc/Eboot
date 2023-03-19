@@ -1,4 +1,4 @@
-import { Carousel, Col, Container, Image, Row } from "react-bootstrap";
+import { Carousel, Col, Container, Image, Pagination, Row } from "react-bootstrap";
 import img1 from "../../assets/Promocao.webp";
 import { Product } from "../../components/product";
 
@@ -13,7 +13,7 @@ export const Home = () => {
           <Image fluid style={{ minHeight: "40vh" }} src={img1} alt="Third slide" />
         </Carousel.Item>
       </Carousel>
-      <Container>
+      <Container className="py-5">
         <Row>
           <Col>
             <Product />
@@ -54,6 +54,17 @@ export const Home = () => {
           </Col>
           <Col>
             <Product />
+          </Col>
+        </Row>
+        <Row>
+          <Col className="w-100 d-flex justify-content-center">
+            <Pagination>
+              <Pagination.Item>1</Pagination.Item>
+              <Pagination.Item>2</Pagination.Item>
+              <Pagination.Item>3</Pagination.Item>
+              <Pagination.Item>4</Pagination.Item>
+              <Pagination.Item>5</Pagination.Item>
+            </Pagination>
           </Col>
         </Row>
       </Container>

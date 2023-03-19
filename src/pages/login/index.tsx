@@ -1,12 +1,22 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { setEmail } from "../../store/cliente/clientSlice";
 export const Login = () => {
+  const { register, handleSubmit } = useForm<{ email: string }>();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   function handleSubmitLogin() {
-    navigate("/");
+    navigate("/adm/consultar-clientes");
   }
-  function handleSubmitFirstAccess() {
+  function handleSubmitFirstAccess(data: { email: string }) {
+    console.log(data.email);
+    const email: string = data.email;
+
+    dispatch(setEmail(email));
+
     navigate("/cadastrar-cliente");
   }
   return (
@@ -33,11 +43,11 @@ export const Login = () => {
           </Form>
         </Col>
         <Col xs={12} sm={5}>
-          <Form onSubmit={handleSubmitFirstAccess}>
+          <Form onSubmit={handleSubmit(handleSubmitFirstAccess)}>
             <h2>Criar conta</h2>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>email</Form.Label>
-              <Form.Control type="email" placeholder="digite seu email" />
+            <Form.Group className="mb-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control {...register("email")} type="email" placeholder="digite seu email" />
             </Form.Group>
             <Button variant="primary" type="submit" className="w-100">
               Proseguir

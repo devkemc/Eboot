@@ -1,5 +1,5 @@
 import { ShoppingCartSimple, User } from "phosphor-react";
-import { Container, Figure, Image, Nav, Navbar, Offcanvas } from "react-bootstrap";
+import { Container, Figure, Nav, Navbar, Offcanvas } from "react-bootstrap";
 import Icon from "../../assets/icon.png";
 import { NavLink } from "react-router-dom";
 
@@ -8,7 +8,7 @@ export const Header = () => {
     <header className="mb-5">
       <Navbar bg="primary" expand="lg" fixed="top">
         <Container>
-          <Navbar.Brand as={NavLink} to="/">
+          <Navbar.Brand as={NavLink} to="/" className="text-light">
             <Figure.Image width={35} height={35} src={Icon} />
             Eboot
           </Navbar.Brand>
@@ -26,11 +26,11 @@ export const Header = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="w-100 d-flex justify-content-end">
-                <Nav.Link as={NavLink} to="/login">
+                <Nav.Link as={NavLink} to="/login" className="text-light">
                   <User size={24} />
                   Entrar
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/carrinho-compras">
+                <Nav.Link as={NavLink} to="/carrinho-compras" className="text-light">
                   <ShoppingCartSimple size={24} />
                 </Nav.Link>
               </Nav>

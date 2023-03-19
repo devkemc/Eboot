@@ -35,7 +35,7 @@ export const ProductCart = () => {
           </Button>
         </Col>
         <Col>
-          <p className="fs-2 fw-bolder">R$296,00</p>
+          <p className="fs-2 fw-bolder">R$499,00</p>
         </Col>
       </Row>
     </Container>

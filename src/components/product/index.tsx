@@ -8,12 +8,14 @@ export const Product = () => {
     navigate("/detalhes-produto");
   }
   return (
-    <Card style={{ width: "18rem" }} className="m-2">
+    <Card
+      style={{ width: "18rem" }}
+      className="m-2 border border-0 shadow p-3 mb-5 bg-body-tertiary rounded :hover{transform:scale(0.2)}"
+    >
       <Card.Img variant="top" src={Img} role="button" onClick={handleDescription} />
       <Card.Body>
         <Card.Title>Tenis Adidas Duramo 10 preto masculino</Card.Title>
         <Card.Text>R$499,00</Card.Text>
-        <Button variant="success">Comprar</Button>
       </Card.Body>
     </Card>
   );
