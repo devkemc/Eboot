@@ -18,8 +18,9 @@ export const clienteSlice = createSlice({
   name: "cliente",
   initialState,
   reducers: {
-    setEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
+    setForm: (state, action: PayloadAction<{ email: string; id: number }>) => {
+      state.email = action.payload.email;
+      state.id = action.payload.id;
     },
     setDadosCliente: (state, action: PayloadAction<DadosPessoais>) => {
       state.nome = action.payload.nome;
@@ -34,4 +35,4 @@ export const clienteSlice = createSlice({
     },
   },
 });
-export const { setEmail, setDadosCliente } = clienteSlice.actions;
+export const { setForm, setDadosCliente } = clienteSlice.actions;

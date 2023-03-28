@@ -3,8 +3,9 @@ import { clienteApi } from "../../store/cliente/apiSlice";
 
 export const ConsultarClientes = () => {
   const { isLoading, data } = clienteApi.useGetClientsQuery();
+  const [inativeClient] = clienteApi.useInativeClientMutation();
   return (
-    <Container className=" positon-relative  p-5 d-flex flex-column align-items-center justify-content-center vh-100">
+    <Container className="p-5 d-flex flex-column align-items-center justify-content-center vh-100">
       <h3>Clientes</h3>
       <Table striped bordered hover>
         <thead>
@@ -28,7 +29,17 @@ export const ConsultarClientes = () => {
                   <td>{cli.email}</td>
                   <td>{cli.ranking}</td>
                   <td>{cli.genero}</td>
-                  <td>{cli.isActive}</td>
+                  <td>{cli.isActive ? "Ativo" : "Desativado"}</td>
+                  <td className="d-flex align-items-center gap-5 justify-content-center">
+                    <a
+                      onClick={() => {
+                        inativeClient({ id: cli.id });
+                      }}
+                      href=""
+                    >
+                      Desativar
+                    </a>
+                  </td>
                 </tr>
               );
             })}

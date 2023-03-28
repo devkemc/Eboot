@@ -1,4 +1,5 @@
 export interface CadastroClienteInterface {
+  id: number;
   nome: string;
   sobrenome: string;
   cpf: string;
@@ -6,14 +7,21 @@ export interface CadastroClienteInterface {
   dataNascimento: string;
   email: string;
   senha: string;
-  ranking: number;
-  isActive: boolean;
   tipoTelefone: string;
   dddTelefone: number;
   numeroTelefone: number;
+  tipoImovel: string;
+  tipoEndereco: string;
+  tipoLogradouro: string;
+  logradouro: string;
+  numeroEndereco: string;
+  bairro: string;
+  cep: number;
+  nomeCidade: string;
+  nomeEstado: string;
 }
 
-export interface ClienteList {
+export interface Client {
   id: number;
   nome: string;
   sobrenome: string;
@@ -25,6 +33,23 @@ export interface ClienteList {
   isActive: boolean;
 }
 
-export interface ClienteGetAll {
-  data: [ClienteList];
+export interface ResponseOneClient {
+  message: string;
+  statusCode: number;
+  data: Client;
+}
+export interface ResponseClienteList {
+  message: string;
+  statusCode: number;
+  data: [Client];
+}
+
+export interface personalData {
+  nome: string;
+  sobrenome: string;
+  cpf: string;
+  genero: string;
+  dataNascimento: string;
+  email: string;
+  senha: string;
 }

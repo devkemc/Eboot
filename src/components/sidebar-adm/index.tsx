@@ -1,24 +1,30 @@
-import { Container, Figure, Nav, Navbar } from "react-bootstrap";
+import { Container, Figure, ListGroup, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import Icon from "../../assets/icon.png";
 
 export const SidebarAdm = () => {
   return (
-    <Container className="position-absolute start-0 vh-100 bg-primary" style={{ width: "250px" }}>
-      <Navbar className="vh-100 flex-column">
-        <Navbar.Brand as={NavLink} to="/">
-          <Figure.Image width={35} height={35} src={Icon} />
-          Eboot
-        </Navbar.Brand>
-        <Nav className="d-flex flex-column ">
-          <Nav.Link as={NavLink} to="/adm/consultar-clientes">
-            Clientes
-          </Nav.Link>
-          <Nav.Link as={NavLink} to="/adm/produtos-listar">
-            Prdutos
-          </Nav.Link>
-        </Nav>
-      </Navbar>
+    <Container fluid className="w-100 d-flex flex-column py-5 vh-100 align-items-center app-sidebar ">
+      <Figure.Image width={100} height={100} src={Icon} />
+      <Container className="bg-light d-flex flex-column shadow p-3 mb-5 bg-body-tertiary rounded">
+        <ListGroup variant="flush">
+        <ListGroup.Item action>
+            <Nav.Link as={NavLink} to="/adm/consultar-clientes">
+              <div className="d-flex gap-2 ">Dashboard</div>
+            </Nav.Link>
+          </ListGroup.Item>
+          <ListGroup.Item action>
+            <Nav.Link as={NavLink} to="/adm/consultar-clientes">
+              <div className="d-flex gap-2 ">Clientes</div>
+            </Nav.Link>
+          </ListGroup.Item>
+          <ListGroup.Item action>
+            <Nav.Link as={NavLink} to="/adm/produtos-listar">
+              <div className="d-flex gap-2 ">Produtos</div>
+            </Nav.Link>
+          </ListGroup.Item>
+        </ListGroup>
+      </Container>
     </Container>
   );
 };

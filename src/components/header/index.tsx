@@ -6,9 +6,9 @@ import { NavLink } from "react-router-dom";
 export const Header = () => {
   return (
     <header className="mb-5">
-      <Navbar bg="primary" expand="lg" fixed="top">
+      <Navbar bg="primary" variant="dark" expand="lg" fixed="top">
         <Container>
-          <Navbar.Brand as={NavLink} to="/" className="text-light">
+          <Navbar.Brand as={NavLink} to="/">
             <Figure.Image width={35} height={35} src={Icon} />
             Eboot
           </Navbar.Brand>
@@ -26,11 +26,11 @@ export const Header = () => {
             </Offcanvas.Header>
             <Offcanvas.Body>
               <Nav className="w-100 d-flex justify-content-end">
-                <Nav.Link as={NavLink} to="/login" className="text-light">
+                <Nav.Link as={NavLink} to="/login">
                   <User size={24} />
                   Entrar
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/carrinho-compras" className="text-light">
+                <Nav.Link as={NavLink} to="/carrinho-compras">
                   <ShoppingCartSimple size={24} />
                 </Nav.Link>
               </Nav>

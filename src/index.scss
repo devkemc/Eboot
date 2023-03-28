@@ -1,1 +1,39 @@
+$primary: #085ec0;
+$secondary: #5f7e9f;
+$succes: green;
+$info: yellow;
+$warning: red;
+$danger: red;
+$light: white;
+$dark: black;
+
+$accent: orange;
+
+$theme-colors: (
+    primary: $primary,
+    secondary:$secondary,
+    success: $succes,
+    info: $info,
+    warning: $warning,
+    light: $light,
+    dark: $dark,
+    accent:$accent,
+);
+
 @import "../node_modules/bootstrap/scss/bootstrap";
+
+.app-bg- {
+    background-color: $gray-200;
+}
+
+.app-layout {
+    display: grid;
+    grid-template-columns: 15% 1fr;
+    grid-template-rows: 100dvh;
+}
+
+.app-sidebar {
+    background-color: $secondary;
+    color: $light;
+    padding-top: 5rem;
+}
