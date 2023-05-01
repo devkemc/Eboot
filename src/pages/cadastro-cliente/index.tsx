@@ -1,17 +1,16 @@
-import { ReactNode, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { clienteApi } from "../../store/cliente/apiSlice";
+import { clientApi } from "../../Redux/domain/cliente/client-api";
 import InputMask from "react-input-mask";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CadastroClienteInterface } from "../../store/cliente/interfaces/cliente";
 import { Loading } from "../../components/loading";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { RootState } from "../../Redux/root/store";
 import { ArrowCircleLeft } from "phosphor-react";
 import * as yup from "yup";
+import {toast} from "react-toastify";
 
 interface CadastroForm {
   nome: string;
@@ -37,7 +36,7 @@ interface CadastroForm {
 }
 
 export const CadastroCliente = () => {
-  const [addCliente, { isLoading, data }] = clienteApi.useAddClientMutation();
+  const [addCliente, { isLoading: ClientIsLoading, data: ClientData, isSuccess: ClientSuccess, isError:ClientError }] = clientApi.useAddClientMutation();
   const [currentForm, setCurrentForm] = useState(1);
   const schema = yup.object().shape({
     senha: yup.string().required(),
@@ -46,10 +45,13 @@ export const CadastroCliente = () => {
       .required()
       .oneOf([yup.ref("senha")], "As senhas devem ser iguais"),
   });
-  const cliente = useSelector((state: RootState) => state.cliente);
+  const client = useSelector((state: RootState) => state.client);
+  console.log(client)
   const {
     register,
     handleSubmit,
+    getValues,
+    reset,
     formState: { errors },
   } = useForm<CadastroForm>();
   const [viewPassword, setViewPassword] = useState(false);
@@ -80,9 +82,9 @@ export const CadastroCliente = () => {
     cep = cep.replace(/[^\d]/g, "");
     dddTelefone = Number(dddTelefone);
     numeroTelefone = Number(numeroTelefone);
-
-    const payload = await addCliente({
-      email: cliente.email,
+    const email = client.email ? client.email : 'teste'
+     addCliente({
+      email,
       nome,
       sobrenome,
       cpf,
@@ -102,18 +104,23 @@ export const CadastroCliente = () => {
       nomeCidade,
       nomeEstado,
     });
-    if (payload.error) {
-      alert(payload.error.data.message);
-      navigate("/login");
-    } else {
-      alert(payload.data.message);
-      navigate("/login");
-    }
   }
+
+  React.useEffect(()=>{
+    if(ClientSuccess){
+      toast.success(`Seu cadastro foi realizado com sucesso ${getValues('nome')}`)
+      navigate('/login')
+    }
+    if(ClientError){
+      toast.error('Deu um erro no seu cadastro, tente novamente!')
+      reset()
+      navigate('/login')
+    }
+  },[ClientSuccess])
 
   return (
     <>
-      {isLoading && <Loading />}
+      {ClientIsLoading && <Loading />}
       <Container className=" d-flex justify-content-center align-items-center vh-100">
         <Container className="w-100 shadow p-5 bg-body-tertiary rounded">
           <form onSubmit={handleSubmit(handleSubmit_ok)}>
@@ -154,8 +161,8 @@ export const CadastroCliente = () => {
                       <Form.Label>Gênero</Form.Label>
                       <Form.Select {...register("genero")} aria-label="Default select example">
                         <option>Selecione gênero</option>
-                        <option value="masculino">Masculino</option>
-                        <option value="feminino">Feminino</option>
+                        <option value="MASCULINO">Masculino</option>
+                        <option value="FEMININO">Feminino</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -206,11 +213,11 @@ export const CadastroCliente = () => {
                   <Col xs={12} sm={2}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                       <Form.Label>Tipo de Telefone</Form.Label>
-                      <Form.Control
-                        {...register("tipoTelefone")}
-                        type="text"
-                        placeholder="digite o tipo do seu telefone"
-                      />
+                      <Form.Select {...register("tipoTelefone")} aria-label="Default select example">
+                        <option>Selecione tipo de telefone</option>
+                        <option value="CELULAR">Celular</option>
+                        <option value="FIXO">Fixo</option>
+                      </Form.Select>
                     </Form.Group>
                   </Col>
                   <Col xs={12} sm={1}>
@@ -263,8 +270,8 @@ export const CadastroCliente = () => {
                       <Form.Label>Tipo de endereço</Form.Label>
                       <Form.Select {...register("tipoEndereco")} aria-label="Default select example">
                         <option>Selecione tipo de endereço</option>
-                        <option value="Cobrança">Cobrança</option>
-                        <option value="Entrega">Entrega</option>
+                        <option value="COBRANCA">Cobrança</option>
+                        <option value="ENTREGA">Entrega</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -273,8 +280,8 @@ export const CadastroCliente = () => {
                       <Form.Label>Tipo de Imovel</Form.Label>
                       <Form.Select {...register("tipoImovel")} aria-label="Default select example">
                         <option>Selecione tipo de Imovel</option>
-                        <option value="Comercial">Comercial</option>
-                        <option value="Residencial">Residencial</option>
+                        <option value="COMERCIAL">Comercial</option>
+                        <option value="RESIDENCIAL">Residencial</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>
@@ -285,9 +292,10 @@ export const CadastroCliente = () => {
                       <Form.Label>Tipo de Logradouro</Form.Label>
                       <Form.Select {...register("tipoLogradouro")} aria-label="Default select example">
                         <option>Selecione tipo de Imovel</option>
-                        <option value="Rua">Rua</option>
-                        <option value="Avenida">Avenida</option>
-                        <option value="Praça">Praça</option>
+                        <option value="RUA">Rua</option>
+                        <option value="AVENIDA">Avenida</option>
+                        <option value="PRACA">Praça</option>
+                        <option value="ESTRADA">Estrada</option>
                       </Form.Select>
                     </Form.Group>
                   </Col>

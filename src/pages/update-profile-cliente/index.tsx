@@ -1,12 +1,14 @@
 import { ReactNode, useEffect } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import ReactInputMask from "react-input-mask";
-import { clienteApi } from "../../store/cliente/apiSlice";
+import { clientApi } from "../../Redux/domain/cliente/client-api";
 import { Loading } from "../../components/loading";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { RootState } from "../../store";
-import { ListCliente } from "./lista";
+import { RootState } from "../../Redux/root/store";
+
+import {selectAuth} from "../../Redux/domain/auth/auth-slice";
+import {toast} from "react-toastify";
 interface personalData {
   id: number;
   nome: string;
@@ -18,34 +20,49 @@ interface personalData {
   senha: string;
 }
 export const UpdateProfileClient = () => {
-  const cliente = useSelector((state: RootState) => state.cliente);
-  const [updateClient, { isSuccess }] = clienteApi.useUpdateClientMutation();
-  const { isLoading, data } = clienteApi.useGetOneClientQuery({ id: cliente.id });
+  const {id} = useSelector(selectAuth)
+  const [updateClient, { isSuccess:updateUser, data: updateClientData, isLoading:updateIsLoading }] = clientApi.useUpdateClientMutation();
+  const { isLoading, data: clientData, isSuccess: clientGetSuccess } = clientApi.useGetOneClientQuery({id});
   const { register, handleSubmit, setValue, getValues } = useForm<personalData>();
 
   useEffect(() => {
-    if (!isLoading) {
-      setValue("id", data!.data!.id);
-      setValue("nome", data!.data!.nome);
-      setValue("sobrenome", data!.data!.sobrenome);
-      setValue("cpf", data!.data!.cpf);
-      setValue("email", data!.data!.email);
-      setValue("senha", data!.data!.senha);
-      setValue("dataNascimento", data!.data!.dataNascimento.slice(0, 10));
+    if (updateUser) {
+      console.log(updateClientData)
+      toast.success('Dados atualizados com sucesso')
     }
-  }, [data]);
+    if(clientGetSuccess){
+      console.log(clientData)
+      setValue("id", clientData.data!.id);
+      setValue("nome", clientData.data!.nome);
+      setValue("sobrenome", clientData.data!.sobrenome);
+      setValue("cpf", clientData.data!.cpf);
+      setValue("email", clientData.data!.email);
+      setValue("dataNascimento", clientData.data!.dataNascimento.slice(0, 10));
+    }
+  }, [clientData]);
+
+  useEffect(() => {
+    if (updateUser) {
+      console.log(updateClientData)
+      toast.success('Dados atualizados com sucesso')
+    }
+    if(clientGetSuccess){
+      setValue("id", updateClientData.data!.id);
+      setValue("nome", updateClientData.data!.nome);
+      setValue("sobrenome", updateClientData.data!.sobrenome);
+      setValue("cpf", updateClientData.data!.cpf);
+      setValue("email", updateClientData.data!.email);
+      setValue("dataNascimento", updateClientData.data!.dataNascimento.slice(0, 10));
+    }
+  }, [updateClientData]);
   async function submit(cliente: personalData) {
-    const payload = await updateClient(cliente);
-    if (payload.error) {
-      alert(payload.error.data.message);
-    } else {
-      alert(payload.data.message);
-    }
+  await updateClient(cliente);
+
   }
 
   return (
     <>
-      {isLoading && <Loading />}
+      {(isLoading || updateIsLoading) && <Loading />}
       <Container className="shadow p-3 mb-5 bg-body-tertiary rounded">
         <Form className="w-100" onSubmit={handleSubmit(submit)}>
           <h2>Alterar cadastro</h2>
@@ -57,13 +74,13 @@ export const UpdateProfileClient = () => {
             <Form.Label>Sobrenome</Form.Label>
             <Form.Control {...register("sobrenome")} type="text" placeholder="digite seu sobrenome" />
           </Form.Group>
-          <Form.Group>
-            <Form.Label>Senha</Form.Label>
-            <Form.Control {...register("senha")} type="password" className="mb-3" placeholder="digite sua senha" />
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Email</Form.Label>
+            <Form.Control {...register("email")} type="text" placeholder="digite seu email" />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>CPF</Form.Label>
-            <Form.Control type="text" placeholder="digite seu CPF" {...register("cpf")} maxLength={11} />
+            <Form.Control disabled type="text" placeholder="digite seu CPF" {...register("cpf")} maxLength={11} />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Data de nascimento</Form.Label>

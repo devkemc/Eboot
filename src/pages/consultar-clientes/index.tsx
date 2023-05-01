@@ -1,9 +1,9 @@
 import { Container, Pagination, Table } from "react-bootstrap";
-import { clienteApi } from "../../store/cliente/apiSlice";
+import { clientApi } from "../../Redux/domain/cliente/client-api";
 
 export const ConsultarClientes = () => {
-  const { isLoading, data } = clienteApi.useGetClientsQuery();
-  const [inativeClient] = clienteApi.useInativeClientMutation();
+  const { isLoading, data } = clientApi.useGetClientsQuery();
+  const [inativeClient] = clientApi.useInativeClientMutation();
   return (
     <Container className="p-5 d-flex flex-column align-items-center justify-content-center vh-100">
       <h3>Clientes</h3>

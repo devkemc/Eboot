@@ -1,14 +1,11 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { CadastroClienteInterface, ResponseClienteList, ResponseOneClient, personalData } from "./interfaces/cliente";
 
-export const clienteApi = createApi({
-  reducerPath: "clientesApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000" }),
-  tagTypes: ["clientes"],
+import {apiSlice} from "../../root/baseApi";
+import {CadastroClienteInterface, personalData, ResponseClienteList, ResponseOneClient} from "./types";
+
+export const clientApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getClients: builder.query<ResponseClienteList, void>({
       query: () => "/clientes",
-      providesTags: ["clientes"],
     }),
     getOneClient: builder.query<ResponseOneClient, { id: number }>({
       query: (cliente) => ({
