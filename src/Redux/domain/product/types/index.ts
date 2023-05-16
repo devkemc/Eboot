@@ -15,16 +15,4 @@ export interface Tamanhos{
     tam_id:number
     tam_tamanho:number
   }
-
-}
-export interface ResponseProductList{
-  statusCode:number
-  message: string
-  data:[ProductState]
-}
-
-export interface ResponseProduct{
-  statusCode:number
-  message: string
-  data: ProductState
 }

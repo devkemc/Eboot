@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { Accordion, Button, Collapse, Container, Form, ListGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-export const PurchaseSumary = () => {
+interface Props{
+  valorTotal:string
+  quantidadeItensCarrinho:number
+  buttonDisabled:boolean
+}
+export const PurchaseSumary = ({quantidadeItensCarrinho,valorTotal, buttonDisabled}:Props) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   function handlePurchashe() {
@@ -14,7 +18,7 @@ export const PurchaseSumary = () => {
   return (
     <Container>
       <ListGroup variant="flush">
-        <ListGroup.Item>Subtotal (2 item): R$999,98</ListGroup.Item>
+        <ListGroup.Item>Subtotal ({quantidadeItensCarrinho} item): R${valorTotal}</ListGroup.Item>
         <ListGroup.Item className="d-flex justify-content-between">
           Cupom desconto
           <div>
@@ -37,14 +41,14 @@ export const PurchaseSumary = () => {
             </Form.Group>
           </div>
         </Collapse>
-        <ListGroup.Item>Valor total: R$999,98</ListGroup.Item>
+        <ListGroup.Item>Valor total: R${valorTotal}</ListGroup.Item>
         <ListGroup.Item>
-          <Button onClick={handleCompletion} className="w-100">
+          <Button onClick={handleCompletion} disabled={buttonDisabled}  className="w-100">
             Finalizar
           </Button>
         </ListGroup.Item>
         <ListGroup.Item>
-          <Button variant="outline-primary" onClick={handlePurchashe} className="w-100">
+          <Button variant="outline-primary"  onClick={handlePurchashe} className="w-100">
             Continuar comprando
           </Button>
         </ListGroup.Item>

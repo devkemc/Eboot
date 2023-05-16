@@ -2,14 +2,14 @@ import {House, ShoppingCartSimple, SignIn, SignOut, User} from "phosphor-react";
 import {Container, Figure, Nav, Navbar, Offcanvas} from "react-bootstrap";
 import Icon from "../../assets/icon.png";
 import {NavLink, useNavigate} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {removeUser, selectAuth} from "../../Redux/domain/auth/auth-slice";
+import {removeUser} from "../../Redux/domain/auth/auth-slice";
 import {useAppDispatch} from "../../Redux/root/hooks";
+import {clientAutheticated} from "../../authenticate/auth-client";
 
 export const Header = () => {
-  const {token} = useSelector(selectAuth)
   const dispacth = useAppDispatch()
   const navigate = useNavigate()
+  const isLogged = clientAutheticated()
 
   function logof() {
     alert('tem certeza?')
@@ -42,7 +42,7 @@ export const Header = () => {
                 <Nav.Link as={NavLink} to="/">
                   <House size={24}/>
                 </Nav.Link>
-                {!token ? (<><Nav.Link as={NavLink} to="/login">
+                {!isLogged ? (<><Nav.Link as={NavLink} to="/login">
                     <SignIn size={24}/>
                   </Nav.Link></>) :
                   (<>

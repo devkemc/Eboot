@@ -7,11 +7,13 @@ import {setupListeners} from '@reduxjs/toolkit/query';
 import {authApi} from '../domain/auth/auth-api';
 import {authSlice} from '../domain/auth/auth-slice';
 import {productApi} from "../domain/product/product-api";
+import {shoppingCartApi} from "../domain/carrinho/shopping-cart-api";
+import {enderecoApi} from "../domain/cliente/endereco-api";
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['api','client']
+  blacklist: ['api', 'client']
 
 };
 
@@ -22,13 +24,18 @@ const persistedReducer = persistReducer(
     auth: authSlice.reducer,
     [productApi.reducerPath]: productApi.reducer,
     [clientApi.reducerPath]: clientApi.reducer,
+    [shoppingCartApi.reducerPath]: shoppingCartApi.reducer,
+    [enderecoApi.reducerPath]: enderecoApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+
   })
 );
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+  }).concat(authApi.middleware),
 });
 
 const persistor = persistStore(store);

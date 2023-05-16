@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {ClientState} from "./types";
+import {ClientState} from "./types/client";
 
  const initialState: ClientState = {
   id: null,

@@ -2,8 +2,13 @@ import {Button, Carousel, Col, Container, Figure, Form, Row} from "react-bootstr
 import {useLocation, useNavigate} from "react-router-dom";
 import {productApi} from "../../Redux/domain/product/product-api";
 import React from "react";
-import {Tamanhos} from "../../Redux/domain/product/types";
 import {Loading} from "../loading";
+import {Controller, useForm} from "react-hook-form";
+import {getIdClient} from "../../utils/get-id-client";
+import {AdicionaItemCarrinho} from "../../Redux/domain/carrinho/types";
+import {shoppingCartApi} from "../../Redux/domain/carrinho/shopping-cart-api";
+import {toast} from "react-toastify";
+
 
 export const ProductDetails = () => {
 
@@ -14,10 +19,30 @@ export const ProductDetails = () => {
   const location = useLocation();
   const id = new URLSearchParams(location.search).get('id');
   const {isLoading, data, isSuccess} = productApi.useGetOneProductQuery({id: Number(id)})
-  console.log(data)
+  const {register, handleSubmit, getValues, control} = useForm<AdicionaItemCarrinho>({
+    defaultValues: {
+      produtoId: Number(id),
+      clienteId: getIdClient()!,
+      quantidadeProduto: 1
+    }
+  })
+  const [addProduct, {
+    isSuccess: addProductCarrinhoIsSuccess,
+    isError: addProductCarrinhoError
+  }] = shoppingCartApi.useAddProductInCarMutation()
 
-  function handlePurchashe() {
-    navigate("/carrinho-compras");
+  React.useEffect(() => {
+    if (addProductCarrinhoIsSuccess && data) {
+      toast.success("Produto adicionado no carrinho com sucesso")
+      navigate("/carrinho-compras");
+    }
+    if (addProductCarrinhoError) {
+      toast.error('Erro ao adicionar produto no carrinho')
+    }
+  },[addProductCarrinhoError, addProductCarrinhoIsSuccess])
+
+  function handlePurchashe({clienteId, tamanhoTenis, quantidadeProduto, produtoId}: AdicionaItemCarrinho) {
+    addProduct({clienteId, quantidadeProduto, produtoId, tamanhoTenis: Number(tamanhoTenis)})
   }
 
   React.useLayoutEffect(() => {
@@ -62,14 +87,25 @@ export const ProductDetails = () => {
                     <h2>R${data.data.preco.toLocaleString()}</h2>
                     <span className="text-primary">cartão 10x sem juros</span>
                     <p>escolha o tamanho: </p>
-                    <Form>
+                    <Form className='d-flex '>
                       {data.data.tamanhos.map((t) => (
-                        <Form.Check key={t.tamanho.tam_id} value={t.tamanho.tam_id} inline type="radio"
-                                    label={t.tamanho.tam_tamanho}
-                                    name="group1"/>
-                      ))}
+                        <Form.Group controlId={`checkbox-${t.tamanho.tam_id}`} key={t.tamanho.tam_id}>
+                          <Controller
+                            name="tamanhoTenis"
+                            control={control}
+                            render={({field}) => (
+                              <Form.Check
+                                inline
+                                type="radio"
+                                label={t.tamanho.tam_tamanho}
+                                {...field}
+                                value={Number(t.tamanho.tam_id)}
+                              />)}/>
+                        </Form.Group>
+                      ))
+                      }
                     </Form>
-                    <Button className="mt-5 w-100" variant="success" onClick={handlePurchashe}>
+                    <Button className="mt-5 w-100" variant="success" onClick={handleSubmit(handlePurchashe)}>
                         Comprar
                     </Button>
                 </Col>

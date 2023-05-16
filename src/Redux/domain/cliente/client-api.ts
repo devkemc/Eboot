@@ -1,6 +1,6 @@
 
 import {apiSlice} from "../../root/baseApi";
-import {CadastroClienteInterface, personalData, ResponseClienteList, ResponseOneClient} from "./types";
+import {CadastroClienteInterface, personalData, ResponseClienteList, ResponseOneClient} from "./types/client";
 
 export const clientApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -9,7 +9,7 @@ export const clientApi = apiSlice.injectEndpoints({
     }),
     getOneClient: builder.query<ResponseOneClient, { id: number }>({
       query: (cliente) => ({
-        url: `/clientes/${cliente.id}`,
+        url: `/clientes?id=${cliente.id}`,
         method: "GET",
       }),
     }),
