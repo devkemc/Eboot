@@ -1,55 +1,85 @@
-import { Container, Form } from "react-bootstrap";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { cardApi } from "../../redux/domain/card/card-api";
+import { useForm } from "react-hook-form";
+import { getIdClient } from "../../utils/get-id-client";
+import { toast } from "react-toastify";
+import React from "react";
 
-export const RegisterCard = () => {
+interface Props {
+  refetch: () => void;
+  setActiveForm: () => void;
+}
+
+interface FormCreatedCard {
+  numeroCartao: number;
+  nomeImpresso: string;
+  codSeguranca: number;
+  bandeiraCartao: string;
+  validade: string;
+  clienteId: number;
+}
+
+export const RegisterCard = ({ refetch, setActiveForm }: Props) => {
+  const [addCard, { isSuccess }] = cardApi.useAddCardMutation();
+  const { register, handleSubmit, reset } = useForm<FormCreatedCard>({
+    defaultValues: {
+      clienteId: getIdClient()!,
+    },
+  });
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      toast.success("Cartão cadastrado com sucesso");
+      refetch();
+      reset();
+      setActiveForm();
+    }
+  }, [isSuccess]);
+  const createdCard = (data: FormCreatedCard) => {
+    addCard({
+      codSeguranca: Number(data.codSeguranca),
+      numeroCartao: Number(data.numeroCartao),
+      bandeiraCartao: data.bandeiraCartao,
+      validade: data.validade,
+      clienteId: data.clienteId,
+      nomeImpresso: data.nomeImpresso,
+    });
+  };
   return (
     <Container className="p-3">
       <Form>
+        <Form.Group className="mb-3">
+          <Form.Label>Bandeira</Form.Label>
+          <Form.Select {...register("bandeiraCartao")}>
+            <option value="VISA">VISA</option>
+            <option value="MASTERCARD">MASTERCARD</option>
+          </Form.Select>
+        </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Número do cartão</Form.Label>
-          <Form.Control type="text" placeholder="digite número do seu cartão" />
+          <Form.Control {...register("numeroCartao")} type="text" placeholder="digite número do seu cartão" />
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Nome do titular</Form.Label>
-          <Form.Control type="text" placeholder="digite nome do titular do cartão" />
+          <Form.Control {...register("nomeImpresso")} type="text" placeholder="digite nome do titular do cartão" />
         </Form.Group>
-        <Form.Group className="d-flex align-items-center justify-content-between gap-3">
-          <Form.Group className="mb-3 w-100">
-            <Form.Label>Mês</Form.Label>
-            <Form.Select aria-label="Default select example">
-              <option>Mês</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="3">4</option>
-              <option value="3">5</option>
-              <option value="3">6</option>
-              <option value="3">7</option>
-              <option value="3">8</option>
-              <option value="3">9</option>
-              <option value="3">10</option>
-              <option value="3">11</option>
-              <option value="3">12</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mb-3 w-100">
-            <Form.Label>Ano</Form.Label>
-            <Form.Select aria-label="Default select example">
-              <option>Ano</option>
-              <option value="2024">2024</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-              <option value="2027">2027</option>
-              <option value="2028">2028</option>
-              <option value="2029">2029</option>
-              <option value="2030">2030</option>
-              <option value="2031">2031</option>
-              <option value="2032">2032</option>
-              <option value="2033">2033</option>
-              <option value="2034">2034</option>
-              <option value="2035">20352</option>
-            </Form.Select>
-          </Form.Group>
-        </Form.Group>
+        <Row>
+          <Col>
+            <Form.Group className="mb-3 w-100">
+              <Form.Label>Validade</Form.Label>
+              <Form.Control type="date" {...register("validade")} />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3 w-100">
+              <Form.Label>Código segurança</Form.Label>
+              <Form.Control {...register("codSeguranca")} />
+            </Form.Group>
+          </Col>
+        </Row>
+        <Button onClick={handleSubmit(createdCard)} className="w-100">
+          Cadastrar cartão
+        </Button>
       </Form>
     </Container>
   );

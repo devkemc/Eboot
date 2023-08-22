@@ -1,7 +1,7 @@
-import {useSelector} from "react-redux";
-import {selectAuth} from "../Redux/domain/auth/auth-slice";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../redux/domain/auth/auth-slice";
 
 export const getIdClient = () => {
-  const {id} = useSelector(selectAuth)
+  const { id } = useSelector(selectAuth);
   return id;
 };

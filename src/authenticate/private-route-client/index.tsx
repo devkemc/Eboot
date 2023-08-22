@@ -7,9 +7,9 @@ interface Props {
   children: ReactComponentElement<any>
 }
 export const PrivateRouteClient = ({children}:Props) =>{
-    if (!clientAutheticated()){
-      toast.error("Faça o login para continuar")
-      return <Navigate to={'/login'}/>
-    }
+    // if (!clientAutheticated()){
+    //   toast.error("Faça o login para continuar")
+    //   return <Navigate to={'/login'}/>
+    // }
   return children
 }

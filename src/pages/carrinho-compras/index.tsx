@@ -1,46 +1,67 @@
-import {Col, Container, Row} from "react-bootstrap";
-import {ItemProductCar} from "../../components/Iitem-product-in-car";
-import {PurchaseSumary} from "../../components/purchase-summary";
-import {shoppingCartApi} from "../../Redux/domain/carrinho/shopping-cart-api";
-import {Loading} from "../../components/loading";
+import { Col, Container, Row } from "react-bootstrap";
+import { ItemProductCar } from "../../components/Iitem-product-in-car";
+import { PurchaseSumary } from "../../components/purchase-summary";
+import { shoppingCartApi } from "../../redux/domain/carrinho/shopping-cart-api";
+import { Loading } from "../../components/loading";
 import React from "react";
-import {getIdClient} from "../../utils/get-id-client";
-import {CarrinhoVazio} from "../../components/carrinho-vazio";
+import { getIdClient } from "../../utils/get-id-client";
+import { CarrinhoVazio } from "../../components/carrinho-vazio";
+import { useAppDispatch } from "../../redux/root/hooks";
+import { carSlice, setCar } from "../../redux/domain/carrinho/car-slice";
+import { itensCarrinho } from "../../mocks/tenis";
+import { LabelHeader } from "../../components/label-header";
 
 export const CarrinhoCompras = () => {
+  // const { isLoading, data, isSuccess, refetch } = shoppingCartApi.useGetShoppingCartQuery({ id: getIdClient()! });
+  const isLoading = false;
+  const isSuccess = true;
+  const data = itensCarrinho;
+  const refetch = () => console.log("refetch");
 
-  const {isLoading, data, isSuccess, refetch} = shoppingCartApi.useGetShoppingCartQuery({id: getIdClient()!})
-  React.useEffect(() => {
-    refetch()
-  }, [])
+  // const dispatch = useAppDispatch();
+  // React.useEffect(() => {
+  //   refetch();
+  //   if (isSuccess) {
+  //     dispatch(setCar(data!.data));
+  //   }
+  // }, [data]);
+  if (isLoading) return <Loading />;
   return (
     <Container fluid="sm" className="p-5 vh-100">
-      {isLoading && <Loading/>}
-      {isSuccess && (<Row>
+      <Row>
         <Col xs={12} sm={8}>
-          <h3>Meu carrinho</h3>
-          {data?.data.itensCarrinho.length != 0 ? (<Container fluid className="d-flex flex-column gap-1">
-            {data?.data.itensCarrinho.map((item) => {
-              return (<ItemProductCar key={item.icar_id} valorTotal={Number(item.icar_valor_total).toLocaleString()}
-                                      produtoId={item.produto_id}
-                                      quantidade={item.icar_quantidade} tamanho={item.tamanho.tam_tamanho}
-                                      itemCarrinhoId={item.icar_id} refecth={refetch}/>)
-            })}
-
-          </Container>) : (<CarrinhoVazio/>)}
-
+          <LabelHeader label="Meu carrinho" />
+          {data?.data.itensCarrinho.length != 0 ? (
+            data?.data.itensCarrinho.map((item) => {
+              return (
+                <ItemProductCar
+                  key={item.icr_id}
+                  valorTotal={Number(item.icr_valor_total).toLocaleString()}
+                  produtoId={item.icr_prd_id}
+                  quantidade={item.icr_quantidade}
+                  tamanho={item.tamanho.tam_tamanho}
+                  itemCarrinhoId={item.icr_id}
+                  refecth={refetch}
+                  style={ {marginBottom: "20px"} }
+                />
+              );
+            })
+          ) : (
+            <CarrinhoVazio />
+          )}
         </Col>
 
         <Col xs={12} sm={4}>
-          <h3>Resumo da compra</h3>
-          <Container fluid className="shadow p-3 mb-5 bg-body-tertiary rounded">
-            <PurchaseSumary quantidadeItensCarrinho={data!.data!.itensCarrinho!.length}
-                            valorTotal={Number(data!.data.valorTotalCarrinho).toLocaleString()}
-                            buttonDisabled={data!.data!.itensCarrinho!.length < 1}/>
+          <LabelHeader label="Resumo da compra" />
+          <Container fluid className="border rounded py-2" >
+            <PurchaseSumary
+              quantidadeItensCarrinho={data!.data!.itensCarrinho!.length}
+              valorTotal={Number(data!.data.valorTotalCarrinho).toLocaleString()}
+              buttonDisabled={data!.data!.itensCarrinho!.length < 1}
+            />
           </Container>
         </Col>
-      </Row>)}
-
+      </Row>
     </Container>
   );
 };

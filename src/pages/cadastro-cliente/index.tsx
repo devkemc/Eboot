@@ -1,16 +1,16 @@
 import React, { ReactNode, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { clientApi } from "../../Redux/domain/cliente/client-api";
+import { clientApi } from "../../redux/domain/cliente/client-api";
 import InputMask from "react-input-mask";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Loading } from "../../components/loading";
 import { useSelector } from "react-redux";
-import { RootState } from "../../Redux/root/store";
+import { RootState } from "../../redux/root/store";
 import { ArrowCircleLeft } from "phosphor-react";
 import * as yup from "yup";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 interface CadastroForm {
   nome: string;
@@ -36,7 +36,8 @@ interface CadastroForm {
 }
 
 export const CadastroCliente = () => {
-  const [addCliente, { isLoading: ClientIsLoading, data: ClientData, isSuccess: ClientSuccess, isError:ClientError }] = clientApi.useAddClientMutation();
+  const [addCliente, { isLoading: ClientIsLoading, data: ClientData, isSuccess: ClientSuccess, isError: ClientError }] =
+    clientApi.useAddClientMutation();
   const [currentForm, setCurrentForm] = useState(1);
   const schema = yup.object().shape({
     senha: yup.string().required(),
@@ -46,7 +47,7 @@ export const CadastroCliente = () => {
       .oneOf([yup.ref("senha")], "As senhas devem ser iguais"),
   });
   const client = useSelector((state: RootState) => state.client);
-  console.log(client)
+  console.log(client);
   const {
     register,
     handleSubmit,
@@ -82,8 +83,8 @@ export const CadastroCliente = () => {
     cep = cep.replace(/[^\d]/g, "");
     dddTelefone = Number(dddTelefone);
     numeroTelefone = Number(numeroTelefone);
-    const email = client.email ? client.email : 'teste'
-     addCliente({
+    const email = client.email ? client.email : "teste";
+    addCliente({
       email,
       nome,
       sobrenome,
@@ -106,17 +107,17 @@ export const CadastroCliente = () => {
     });
   }
 
-  React.useEffect(()=>{
-    if(ClientSuccess){
-      toast.success(`Seu cadastro foi realizado com sucesso ${getValues('nome')}`)
-      navigate('/login')
+  React.useEffect(() => {
+    if (ClientSuccess) {
+      toast.success(`Seu cadastro foi realizado com sucesso ${getValues("nome")}`);
+      navigate("/login");
     }
-    if(ClientError){
-      toast.error('Deu um erro no seu cadastro, tente novamente!')
-      reset()
-      navigate('/login')
+    if (ClientError) {
+      toast.error("Deu um erro no seu cadastro, tente novamente!");
+      reset();
+      navigate("/login");
     }
-  },[ClientSuccess])
+  }, [ClientSuccess]);
 
   return (
     <>

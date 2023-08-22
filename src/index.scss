@@ -1,6 +1,7 @@
-$primary: #085ec0;
+$primary: #cc4e10;
+$primary-subtle: lighten($primary, 40%);
 $secondary: #5f7e9f;
-$succes: green;
+$succes: #6C757D;
 $info: yellow;
 $warning: red;
 $danger: red;
@@ -11,6 +12,7 @@ $accent: orange;
 
 $theme-colors: (
     primary: $primary,
+    primary-subtle: $primary-subtle,
     secondary:$secondary,
     success: $succes,
     info: $info,
@@ -23,19 +25,22 @@ $theme-colors: (
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 .app-bg- {
-    background-color: $gray-200;
+    background-color: $primary;
 }
 
 .app-layout {
     display: grid;
-    grid-template-columns: 15% 1fr;
-    grid-template-rows: 100dvh;
+    grid-template-columns: 300px 1fr;
+    margin-top: 69px;
+    height: calc(100vh - 69px);
+    @media (max-width: 992px) {
+        grid-template-columns: 100%;
+    }
 }
 
 .app-sidebar {
-    background-color: $secondary;
+    background-color: #dfb099;
     color: $light;
-    padding-top: 5rem;
 }
 .hover:hover{
     transform: scale(1,1.1);

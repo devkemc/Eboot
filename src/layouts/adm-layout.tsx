@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
 import { SidebarAdm } from "../components/sidebar-adm";
-import { Header } from "../components/header";
+import {HeaderAdmin} from "../components/header-admin";
 
 export const AdmLayout = () => {
   return (
     <>
-    <Header/>
+    <HeaderAdmin/>
       <div className="app-layout">
         <SidebarAdm />
         <Outlet />

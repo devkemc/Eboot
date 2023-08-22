@@ -1,14 +1,14 @@
 import { ReactNode, useEffect } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import ReactInputMask from "react-input-mask";
-import { clientApi } from "../../Redux/domain/cliente/client-api";
+import { clientApi } from "../../redux/domain/cliente/client-api";
 import { Loading } from "../../components/loading";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { RootState } from "../../Redux/root/store";
+import { RootState } from "../../redux/root/store";
 
-import {selectAuth} from "../../Redux/domain/auth/auth-slice";
-import {toast} from "react-toastify";
+import { selectAuth } from "../../redux/domain/auth/auth-slice";
+import { toast } from "react-toastify";
 interface personalData {
   id: number;
   nome: string;
@@ -20,18 +20,19 @@ interface personalData {
   senha: string;
 }
 export const UpdateProfileClient = () => {
-  const {id} = useSelector(selectAuth)
-  const [updateClient, { isSuccess:updateUser, data: updateClientData, isLoading:updateIsLoading }] = clientApi.useUpdateClientMutation();
-  const { isLoading, data: clientData, isSuccess: clientGetSuccess } = clientApi.useGetOneClientQuery({id});
+  const { id } = useSelector(selectAuth);
+  const [updateClient, { isSuccess: updateUser, data: updateClientData, isLoading: updateIsLoading }] =
+    clientApi.useUpdateClientMutation();
+  const { isLoading, data: clientData, isSuccess: clientGetSuccess } = clientApi.useGetOneClientQuery({ id });
   const { register, handleSubmit, setValue, getValues } = useForm<personalData>();
 
   useEffect(() => {
     if (updateUser) {
-      console.log(updateClientData)
-      toast.success('Dados atualizados com sucesso')
+      console.log(updateClientData);
+      toast.success("Dados atualizados com sucesso");
     }
-    if(clientGetSuccess){
-      console.log(clientData)
+    if (clientGetSuccess) {
+      console.log(clientData);
       setValue("id", clientData.data!.id);
       setValue("nome", clientData.data!.nome);
       setValue("sobrenome", clientData.data!.sobrenome);
@@ -43,10 +44,10 @@ export const UpdateProfileClient = () => {
 
   useEffect(() => {
     if (updateUser) {
-      console.log(updateClientData)
-      toast.success('Dados atualizados com sucesso')
+      console.log(updateClientData);
+      toast.success("Dados atualizados com sucesso");
     }
-    if(clientGetSuccess){
+    if (clientGetSuccess) {
       setValue("id", updateClientData.data!.id);
       setValue("nome", updateClientData.data!.nome);
       setValue("sobrenome", updateClientData.data!.sobrenome);
@@ -56,8 +57,7 @@ export const UpdateProfileClient = () => {
     }
   }, [updateClientData]);
   async function submit(cliente: personalData) {
-  await updateClient(cliente);
-
+    await updateClient(cliente);
   }
 
   return (
