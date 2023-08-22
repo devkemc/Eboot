@@ -1,4 +1,4 @@
-import { Badge, ListGroup, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { pedidosMock } from "../../mocks/pedidos";
 import { ItemNotification } from "./item-notification";
 interface TradeRequestsProps {
